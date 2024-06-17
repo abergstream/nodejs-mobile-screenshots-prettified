@@ -1,0 +1,1 @@
+# nodejs-mobile-screenshots-prettified
