@@ -1,43 +1,146 @@
 const sharp = require("sharp");
-const process = require("process");
-const prompt = require("prompt-sync")();
+const { argv } = require("process");
 const prompts = require("prompts");
+
+const argPhone = argv[2];
+const argColor1 = argv[3];
+const argColor2 = argv[4];
+const argGradientSetting = argv[5];
+const qPhone = {
+  type: "select",
+  name: "phone",
+  message: "Screenshots for Android or iPhone?",
+  choices: [
+    {
+      title: "Android",
+      value: "android",
+    },
+    {
+      title: "iPhone",
+      value: "iphone",
+    },
+  ],
+};
+const qColor1 = {
+  type: "text",
+  name: "color1",
+  initial: "#777777",
+  message: "Color 1 (#777777 if empty) ",
+};
+const qColor2 = {
+  type: "text",
+  name: "color2",
+  initial: "#CCCCCC",
+  message: "Color 2 (#CCCCCC if empty) ",
+};
+const qGradientSetting = {
+  type: "select",
+  name: "gradientSetting",
+  message: "Gradient",
+  choices: [
+    {
+      title: "Basic",
+      description: "More basic settings for gradient",
+      value: "basic",
+    },
+    {
+      title: "Advanced",
+      description: "This will give you more settings and possibilites",
+      value: "advanced",
+    },
+  ],
+};
+const advancedGradient = [
+  {
+    type: "text",
+    name: "x1",
+    initial: "0%",
+    message: "Gradient x1: ",
+  },
+  {
+    type: "text",
+    name: "y1",
+    initial: "0%",
+    message: "Gradient y1: ",
+  },
+  {
+    type: "text",
+    name: "x2",
+    initial: "0%",
+    message: "Gradient x2: ",
+  },
+  {
+    type: "text",
+    name: "y2",
+    initial: "100%",
+    message: "Gradient y2: ",
+  },
+];
+const basicGradient = {
+  type: "select",
+  name: "gradient",
+  message: "Gradient",
+  choices: [
+    {
+      title: "Top to bottom",
+      value: {
+        x1: "0%",
+        x2: "0%",
+        y1: "0%",
+        y2: "100%",
+      },
+    },
+    {
+      title: "Top left to bottom right",
+      value: {
+        x1: "0%",
+        x2: "100%",
+        y1: "0%",
+        y2: "100%",
+      },
+    },
+    {
+      title: "Top right to bottom left",
+      value: {
+        x1: "100%",
+        x2: "0%",
+        y1: "0%",
+        y2: "100%",
+      },
+    },
+    {
+      title: "Left to right",
+      value: {
+        x1: "0%",
+        x2: "100%",
+        y1: "0%",
+        y2: "0%",
+      },
+    },
+  ],
+};
 (async () => {
-  const query = await prompts([
-    {
-      type: "text",
-      name: "color1",
-      message: "Color 1 (#777 if empty) ",
-    },
-    {
-      type: "text",
-      name: "color2",
-      message: "Color 1 (#CCC if empty) ",
-    },
-    {
-      type: "select",
-      name: "color",
-      message: "Pick a color",
-      choices: [
-        {
-          title: "Red",
-          description: "This option has a description.",
-          value: "#ff0000",
-        },
-        { title: "Green", value: "#00ff00" },
-        { title: "Yellow", value: "#ffff00", disabled: true },
-        { title: "Blue", value: "#0000ff" },
-      ],
-    },
-  ]);
+  // If argv has no value, open prompts
+  const phone = argPhone || (await prompts(qPhone)).phone;
+  const color1 = argColor1 || (await prompts(qColor1)).color1;
+  const color2 = argColor2 || (await prompts(qColor2)).color2;
+  const gradientSetting =
+    argGradientSetting || (await prompts(qGradientSetting)).gradientSetting;
+
+  // Different gradient questions depending on advanced / basic
+  let gradientPosition;
+
+  // If argv is set to basic, choose top to bottom
+  if (argGradientSetting === "basic") {
+    gradientPosition = basicGradient.choices[0].value;
+  } else {
+    gradientPosition = await prompts(
+      gradientSetting === "advanced" ? advancedGradient : basicGradient
+    );
+  }
 
   const createPhoneSvg = require("./src/service/phoneSvg.js");
   const createGradientSVG = require("./src/service/gradientSvg.js");
-  // let color1 = prompt("Color 1? (#777777 if empty) ");
-  // let color2 = prompt("Color 2? (#CCCCCC if empty) ");
-
-  const color1 = query.color1 ? query.color1 : "#777";
-  const color2 = query.color2 ? query.color2 : "#CCC";
 
   // Paths to the image
   const outputPath = "./testOutput2.png"; // Path for the output image
@@ -53,7 +156,8 @@ const prompts = require("prompts");
     canvasWidth,
     canvasHeight,
     color1,
-    color2
+    color2,
+    gradientPosition.gradient ? gradientPosition.gradient : gradientPosition
   );
   // Create phoneSVG buffer
   const phoneSVG = createPhoneSvg(
