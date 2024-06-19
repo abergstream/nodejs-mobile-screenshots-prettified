@@ -1,11 +1,22 @@
 const sharp = require("sharp");
 const prompts = require("prompts");
 const { argv } = require("process");
+const fs = require("fs");
+const newFolder = "newScreenshots";
+if (!fs.existsSync(newFolder)) {
+  // Do something
 
+  fs.mkdir(newFolder, (err) => {
+    if (err) {
+      return console.error(err);
+    }
+    console.log("Directory created successfully!");
+  });
+}
 const createPhoneSvg = require("./phoneSvg.js");
 const createGradientSVG = require("./gradientSvg.js");
 
-const makeNewPrintscreen = async (info, number) => {
+const makeNewPrintscreen = async (info, model, number) => {
   // If argv has no value, open prompts
   const {
     canvasWidth,
@@ -17,27 +28,33 @@ const makeNewPrintscreen = async (info, number) => {
     gradientPosition,
   } = info;
   // Paths to the image
-  const outputPath = `./screenshot_${number}.png`; // Path for the output image
+  const outputPath = `./${newFolder}/screenshot_${number}.png`; // Path for the output image
 
   const strokeWidth = 10;
 
-  const screenshot = "./img_templates/testScreenshot.png"; // Image to be placed in the middle
-  // const screenshot = `./${number}.png`;
+  // const screenshot = "./img_templates/testScreenshot.png"; // Image to be placed in the middle
+  const screenshot = `./${number}.png`;
   const screenshotImage = sharp(screenshot);
 
+  // Phone position
   const phoneCenterX = Math.round(
     (canvasWidth - phoneWidth) / 2 + strokeWidth / 2
   );
   const phoneCenterY = Math.round(
     (canvasHeight - phoneHeight) / 2 + strokeWidth / 2
   );
-  const phonePositionX = phoneCenterX;
-  const phonePositionY = phoneCenterY;
 
+  // Variables in case we want the phone elsewhere
+  let phonePositionX = phoneCenterX;
+  let phonePositionY = phoneCenterY;
+  if (model == "tablet10") {
+    phonePositionY += 100;
+  }
   // Phonewidth minus the frame
   const screenshotWidth = phoneWidth - strokeWidth * 2;
-  const screenshotHeight = screenshotWidth * 2;
+  const screenshotHeight = phoneHeight;
 
+  // Screenshot placement
   const mainImageTop = Math.round(phonePositionY + strokeWidth / 2);
   const mainImageLeft =
     Math.round((canvasWidth - phoneWidth) / 2) + strokeWidth;
@@ -58,7 +75,8 @@ const makeNewPrintscreen = async (info, number) => {
     phoneHeight,
     strokeWidth,
     phonePositionX,
-    phonePositionY
+    phonePositionY,
+    model
   );
   sharp(Buffer.from(gradientSVG))
     .png()

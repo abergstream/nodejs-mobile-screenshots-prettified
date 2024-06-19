@@ -14,29 +14,6 @@ const argColor1 = argv[3];
 const argColor2 = argv[4];
 const argGradientSetting = argv[5];
 
-const device = {
-  android: {
-    phone: {
-      canvasWidth: 1080,
-      canvasHeight: 2400,
-      deviceWidth: 700,
-      deviceHeight: 1380,
-    },
-    tablet7: {
-      canvasWidth: 1080,
-      canvasHeight: 1920,
-      deviceWidth: 900,
-      deviceHeight: 1780,
-    },
-    tablet10: {
-      canvasWidth: 2460,
-      canvasHeight: 1600,
-      deviceWidth: 1500,
-      deviceHeight: 900,
-    },
-  },
-};
-
 const getInfo = async () => {
   const info = {
     phone: argPhone || (await prompts(qPhone)).phone,
@@ -58,13 +35,6 @@ const getInfo = async () => {
     );
   }
   info["gradientPosition"] = gradientPosition;
-
-  // Hard coded modele for testing
-  const model = "phone";
-  info["canvasWidth"] = device[info.phone][model].canvasWidth;
-  info["canvasHeight"] = device[info.phone][model].canvasHeight;
-  info["phoneWidth"] = device[info.phone][model].deviceWidth;
-  info["phoneHeight"] = device[info.phone][model].deviceHeight;
   return info;
 };
 module.exports = getInfo;
