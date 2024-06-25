@@ -18,13 +18,13 @@ const qColor1 = {
   type: "text",
   name: "color1",
   initial: "#777777",
-  message: "Color 1 (#777777 if empty) ",
+  message: "Background color 1 (#777777 if empty) ",
 };
 const qColor2 = {
   type: "text",
   name: "color2",
   initial: "#CCCCCC",
-  message: "Color 2 (#CCCCCC if empty) ",
+  message: "Background color 2 (#CCCCCC if empty) ",
 };
 const qGradientSetting = {
   type: "select",
@@ -135,7 +135,12 @@ const qText2 = [
         : true,
   },
 ];
-
+const qTextColor = {
+  type: "text",
+  name: "textColor",
+  initial: "#000000",
+  message: "Text color (#000000 if empty) ",
+};
 module.exports = {
   qPhone,
   qColor1,
@@ -145,4 +150,5 @@ module.exports = {
   qBasicGradient,
   qText1,
   qText2,
+  qTextColor,
 };

@@ -9,6 +9,7 @@ const {
   qBasicGradient,
   qText1,
   qText2,
+  qTextColor,
 } = require("./questions.js");
 
 const argPhone = argv[2];
@@ -21,6 +22,7 @@ const getInfo = async () => {
     phone: argPhone || (await prompts(qPhone)).phone,
     color1: argColor1 || (await prompts(qColor1)).color1,
     color2: argColor2 || (await prompts(qColor2)).color2,
+    textColor: (await prompts(qTextColor)).textColor,
     text1: (await prompts(qText1)).text1,
     text2: (await prompts(qText2)).text2,
   };

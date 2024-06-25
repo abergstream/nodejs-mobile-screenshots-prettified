@@ -8,7 +8,7 @@ const createPhoneSvg = require("./phoneSvg.js");
 const createGradientSVG = require("./gradientSvg.js");
 
 // Load fonts and initialize textToSVG
-const fontPath = path.join(__dirname, "../fonts/Lato-Regular.ttf");
+const fontPath = path.join(__dirname, "../fonts/Lato-Bold.ttf");
 const textToSVG = TextToSVG.loadSync(fontPath);
 
 if (!fs.existsSync(newFolder)) {
@@ -27,6 +27,7 @@ const makeNewPrintscreen = async (info, model, number) => {
     gradientPosition,
     text1,
     text2,
+    textColor,
   } = info;
 
   const outputPath = `./${newFolder}/screenshot_${number}.png`;
@@ -59,7 +60,7 @@ const makeNewPrintscreen = async (info, model, number) => {
     y: 0,
     fontSize: fontsize,
     anchor: "top",
-    attributes: { fill: "#FFFFFF" },
+    attributes: { fill: textColor },
   };
   // The script will fail if the text is empty, adds a space if it is
   let text1Corrected = text1 ? text1 : " ";
