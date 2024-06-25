@@ -112,6 +112,30 @@ const qBasicGradient = {
     },
   ],
 };
+const maxLength = 35;
+const qText1 = [
+  {
+    type: "text",
+    name: "text1",
+    message: "Text for startpage",
+    validate: (value) =>
+      value.length > maxLength
+        ? `Max characters ${maxLength}, value is ${value.length}`
+        : true,
+  },
+];
+const qText2 = [
+  {
+    type: "text",
+    name: "text2",
+    message: "Text for archive",
+    validate: (value) =>
+      value.length > maxLength
+        ? `Max characters ${maxLength}, value is ${value.length}`
+        : true,
+  },
+];
+
 module.exports = {
   qPhone,
   qColor1,
@@ -119,4 +143,6 @@ module.exports = {
   qGradientSetting,
   qAdvancedGradient,
   qBasicGradient,
+  qText1,
+  qText2,
 };

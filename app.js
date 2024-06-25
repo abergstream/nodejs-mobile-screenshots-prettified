@@ -5,14 +5,14 @@ const device = {
     phone: {
       canvasWidth: 1080,
       canvasHeight: 2400,
-      deviceWidth: 700,
-      deviceHeight: 1500,
+      deviceWidth: 837,
+      deviceHeight: 1830,
     },
     tablet7: {
       canvasWidth: 800,
       canvasHeight: 1280,
       deviceWidth: 630,
-      deviceHeight: 965,
+      deviceHeight: 995,
     },
     tablet10: {
       canvasWidth: 2560,
@@ -34,7 +34,6 @@ const deviceOrder = [
   const info = await getInfo();
   for (let i = 1; i <= 6; i++) {
     const model = deviceOrder[i - 1];
-
     info["canvasWidth"] = device[info.phone][model].canvasWidth;
     info["canvasHeight"] = device[info.phone][model].canvasHeight;
     info["phoneWidth"] = device[info.phone][model].deviceWidth;

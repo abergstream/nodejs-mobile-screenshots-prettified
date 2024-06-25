@@ -7,6 +7,8 @@ const {
   qGradientSetting,
   qAdvancedGradient,
   qBasicGradient,
+  qText1,
+  qText2,
 } = require("./questions.js");
 
 const argPhone = argv[2];
@@ -19,6 +21,8 @@ const getInfo = async () => {
     phone: argPhone || (await prompts(qPhone)).phone,
     color1: argColor1 || (await prompts(qColor1)).color1,
     color2: argColor2 || (await prompts(qColor2)).color2,
+    text1: (await prompts(qText1)).text1,
+    text2: (await prompts(qText2)).text2,
   };
 
   const gradientSetting =
@@ -28,7 +32,7 @@ const getInfo = async () => {
   let gradientPosition;
   // If argv is set to basic, choose top to bottom
   if (argGradientSetting === "basic") {
-    gradientPosition = qBasicGradient.choices[0].value;
+    gradientPosition = { gradient: qBasicGradient.choices[0].value };
   } else {
     gradientPosition = await prompts(
       gradientSetting === "advanced" ? qAdvancedGradient : qBasicGradient
